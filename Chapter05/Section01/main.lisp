@@ -3,4 +3,7 @@
                         (attic (you are in the attic))
                         ))
 
-
+(defun decribe-location (location nodes)
+  (cadr (assoc location nodes)))
+ 
+(print (decribe-location 'living-room *nodes*))
