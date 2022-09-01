@@ -49,3 +49,13 @@
           (describe-objects *location* *objects* *object-location*)))
 
 (print (look))
+
+(defun walk (direction)
+  (let ((next (find direction 
+                    (cdr (assoc *location* *edges*))
+                    :key #'cadr)))
+    (if next
+        (progn (setf *location* (cdr next))
+               (look))
+        '(you cannot go...))))
+(print (walk 'east))
