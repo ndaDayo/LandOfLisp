@@ -3,10 +3,10 @@
                         (attic (you are in the attic))
                         ))
 
-(defun decribe-location (location nodes)
+(defun describe-location (location nodes)
   (cadr (assoc location nodes)))
  
-(print (decribe-location 'living-room *nodes*))
+(print (describe-location 'living-room *nodes*))
 
 (defparameter *edges* '((living-room (garden west door)
                                      (attic upstairs ladder))
@@ -33,3 +33,19 @@
     (remove-if-not #'at-loc-p objs)))
 
 (print (object-at 'living-room *objects* *object-location*))
+
+(defun describe-objects (loc objs obj-loc)
+  (labels ((describe-obj (obj)
+             `(you see a, obj on the floor.)))
+    (apply #'append (mapcar #'describe-obj (object-at loc objs obj-loc)))))
+
+(print (describe-objects 'living-room *objects* *object-location*))
+
+(defparameter *location* 'living-room)
+
+(defun look ()
+  (append (describe-location *location* *nodes*)
+          (describe-paths *location* *edges*)
+          (describe-objects *location* *objects* *object-location*)))
+
+(print (look))
