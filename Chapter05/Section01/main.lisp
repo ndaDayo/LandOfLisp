@@ -58,4 +58,14 @@
         (progn (setf *location* (cdr next))
                (look))
         '(you cannot go...))))
+
 (print (walk 'east))
+
+(defun pickup (object)
+  (cond ((member object
+                 (object-at *location* *objects* *object-location*))
+         (push (list object 'body) *object-location*)
+         `(you are now carrying the , object))
+        (t '(you cannot get that.))))
+
+(print (pickup 'whiskey))
