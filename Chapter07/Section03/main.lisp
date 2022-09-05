@@ -1,14 +1,17 @@
 (defparameter *wizard-nodes* '((living-room (you are in the living-room))
                                (garden (you are in the garden))
                                (attic (you are in the attic))))
-
+(defparameter *wizard-edges* '((living-room (garden west door)
+                                            (attic upstairs ladder))
+                               (garden (living-room east door))
+                               (attic (living-room downstairs ladder))))
 (defun dot-name (exp)
   (substitute-if #\_ (complement #'alphanumericp) (prin1-to-string exp)))
 
 (defparameter *max-label-length* 30) 
 
 (defun dot-label (exp)
-  (if exp
+   (if exp
       (let ((s (write-to-string exp :pretty nil)))
         (if (> (length s) *max-label-length*)
             (concatenate 'string (subseq s 0 (- *max-label-length* 3)) "...")
@@ -24,5 +27,17 @@
           (princ "\"];"))
         nodes))
 
-(print (dot-label "ndadayo!!!!!nadayo!!!!!!nnadadayoyoyoyyoy!!"))
-(print (nodes->dot *wizard-nodes*))
+(defun edges->dot (edges)
+  (mapc (lambda (node)
+          (mapc (lambda (edge)
+                  (fresh-line)
+                  (princ (dot-name (car node)))
+                  (princ "->")
+                  (princ (dot-name (car edge)))
+                  (princ "[label=\"")
+                  (princ (dot-label (cdr edge)))
+                  (princ "\"];"))
+                (cdr node)))
+        edges))
+
+(print (edges->dot *wizard-edges*))
