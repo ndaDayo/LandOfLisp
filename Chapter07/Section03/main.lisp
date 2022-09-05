@@ -40,4 +40,10 @@
                 (cdr node)))
         edges))
 
-(print (edges->dot *wizard-edges*))
+(defun gragh->dot (nodes edges)
+  (princ "digraph{")
+  (nodes->dot nodes)
+  (edges->dot edges)
+  (princ "}"))
+
+(print (gragh->dot *wizard-nodes* *wizard-edges*))
