@@ -46,4 +46,16 @@
   (edges->dot edges)
   (princ "}"))
 
-(print (gragh->dot *wizard-nodes* *wizard-edges*))
+(defun dot->png (fname thunk)
+  (with-open-file (*standard-output*
+                    (concatenate 'string fname ".dot")
+                    :direction :output
+                    :if-exists :supersede)
+    (funcall thunk))
+  (ext:shell (concatenate 'string "dot -Tpng -O" fname)))
+
+(defun gragh->png (fname nodes edges)
+  (dot->png fname
+            (lambda ()
+              (gragh->dot nodes edges))))
+
